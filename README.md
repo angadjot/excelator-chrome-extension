@@ -52,9 +52,9 @@ Browse to the build folder and press the OK button.
 
 If everything goes right, you will have your extension installed in Chrome.
 
-![Chrome Extention](https://github.com/angadjot/excelator-chrome-extension/blob/master/images/Chrome%20Extention.png?raw=true)
+![Chrome Extention](https://github.com/angadjot/excelator-chrome-extension/blob/master/images/chrome_extention.png?raw=true)
 
-![Extention Preview](https://github.com/angadjot/excelator-chrome-extension/blob/master/images/Extention%20Preview.png?raw=true)
+![Extention Preview](https://github.com/angadjot/excelator-chrome-extension/blob/master/images/extention_preview.png?raw=true)
 
 Alternatively, 
 
