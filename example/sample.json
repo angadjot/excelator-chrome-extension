@@ -1,0 +1,19 @@
+{
+  "工作表1": [
+    {
+      "item": "apple",
+      "price": "100",
+      "number": "2"
+    },
+    {
+      "item": "banana",
+      "price": "200",
+      "number": "12"
+    },
+    {
+      "item": "coffee",
+      "price": "150",
+      "number": "3"
+    }
+  ]
+}

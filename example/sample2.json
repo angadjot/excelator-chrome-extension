@@ -1,0 +1,32 @@
+{
+  "fruit": [
+    {
+      "item": "apple",
+      "price": "100",
+      "number": "two",
+      "buyer": "Andy;Bob"
+    },
+    {
+      "item": "banana",
+      "price": "200",
+      "number": "twelve ",
+      "buyer": "Tom;"
+    },
+    {
+      "item": "coffee",
+      "price": "150",
+      "number": " three",
+      "buyer": "Mary; Calvin"
+    }
+  ],
+  "car": [
+    {
+      "Type": "Car",
+      "Price": "10000"
+    },
+    {
+      "Type": "Bus",
+      "Price": "200000"
+    }
+  ]
+}
