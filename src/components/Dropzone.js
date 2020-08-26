@@ -34,7 +34,16 @@ const rejectStyle = {
   borderColor: '#ff1744'
 };
 
-function StyledDropzone(props) {
+function downloadTxtFile(parsedJson) {
+  const element = document.createElement("a");
+  const file = new Blob([parsedJson], {type: 'application/json'});
+  element.href = URL.createObjectURL(file);
+  element.download = "parsed_json.json";
+  document.body.appendChild(element); // Required for this to work in FireFox
+  element.click();
+}
+
+function StyledDropzone() {
   const [copySuccess, setCopySuccess] = useState(false);
   const [errorParsing, setError] = useState(false);
 
@@ -53,9 +62,11 @@ function StyledDropzone(props) {
           .onFileSelection(acceptedFiles[0])
           .then(data => {
             console.log(JSON.stringify(data, null, 2));
-            navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+            // Uncomment the below line to copy the parsed json to clipboard
+            // navigator.clipboard.writeText(JSON.stringify(data, null, 2));
             setCopySuccess(true);
             setError(false);
+            downloadTxtFile(JSON.stringify(data, null, 2));
           });
       } else {
         setError(true);
@@ -82,9 +93,9 @@ function StyledDropzone(props) {
           <input {...getInputProps()} />
           <p>Drag 'n' Drop file here<br/><br/>or<br/><br/>Click to Select file</p>
         </div>}
-        {copySuccess && <div style={style}>"Parsed Json Copied to Clipboard !!"</div>}
-        {acceptedFiles.length > 1 && <div style={style}>"Error !!"<br/>"Please add a single file at a time"</div>}
-        {errorParsing && <div style={style}>"Can't Parse the File."<br/>"Try Another File"</div>}
+        {copySuccess && <div style={style}>Parsed json saved to file !!</div>}
+        {acceptedFiles.length > 1 && <div style={style}>Error !!<br/>Please add a single file at a time</div>}
+        {errorParsing && <div style={style}>Can't parse the file...<br/>Try Another File..!!</div>}
       </div>
     </div>
   );
