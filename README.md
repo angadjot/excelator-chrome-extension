@@ -1,6 +1,6 @@
 # Excelator Chrome Extention
 
-Excelator is a chrome extention developed using React. This plugin accepts a xml, xls, xlsx file and converts the data in the file to Json. The parsed json is copied to the clipboard and can then be used by the user.
+Excelator is a chrome extention developed using React. This plugin accepts a xml, xls, xlsx file and converts the data in the file to Json. Once the xml/xlsx file is parsed, the user is provided option to download the file containing parsed json.
 
 ## Getting Started
 
