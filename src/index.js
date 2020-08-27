@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import StyledDropzone from "./components/Dropzone";
+import Tabs from "./components/tabs";
 
 ReactDOM.render(
-  <StyledDropzone/>,
+  <Tabs/>,
   document.getElementById('root')
 );
 

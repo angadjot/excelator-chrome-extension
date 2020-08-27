@@ -1,13 +1,11 @@
 import React, {useMemo, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import xlsxParser from 'xlsx-parse-json';
+import {Constants} from "../Constants";
+import json2xls from "../utils/json2xls";
 
 const baseStyle = {
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
   alignItems: 'center',
-  padding: '20px',
   borderWidth: 2,
   borderRadius: 2,
   borderColor: '#ffffff',
@@ -34,16 +32,24 @@ const rejectStyle = {
   borderColor: '#ff1744'
 };
 
-function downloadTxtFile(parsedJson) {
+function downloadFile(parsedDate, json) {
   const element = document.createElement("a");
-  const file = new Blob([parsedJson], {type: 'application/json'});
-  element.href = URL.createObjectURL(file);
-  element.download = "parsed_json.json";
+
+  if (json) {
+    const file = new Blob([parsedDate], {type: 'application/json'});
+    element.href = URL.createObjectURL(file);
+    element.download = "parsed_json.json";
+  } else {
+    const file = new Blob([parsedDate], {type: 'binary'});
+    element.href = URL.createObjectURL(file);
+    element.download = "parsed_excel.xlsx";
+  }
+
   document.body.appendChild(element); // Required for this to work in FireFox
   element.click();
 }
 
-function StyledDropzone() {
+function StyledDropzone(props) {
   const [copySuccess, setCopySuccess] = useState(false);
   const [errorParsing, setError] = useState(false);
 
@@ -55,19 +61,34 @@ function StyledDropzone() {
     isDragAccept,
     isDragReject
   } = useDropzone({
-    accept: '.xls,.xlsx,.xml',
+    accept: props.conversion === Constants.EXCEL_TO_JSON ? '.xls,.xlsx,.xml' : '.json',
     onDropAccepted: acceptedFiles => {
-      if (acceptedFiles.length === 1) {
-        xlsxParser
-          .onFileSelection(acceptedFiles[0])
-          .then(data => {
-            console.log(JSON.stringify(data, null, 2));
-            // Uncomment the below line to copy the parsed json to clipboard
-            // navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+      if (props.conversion === Constants.EXCEL_TO_JSON) {
+        if (acceptedFiles.length === 1) {
+          xlsxParser
+            .onFileSelection(acceptedFiles[0], {showNullProperties: true, hideEmptyRows: false})
+            .then(data => {
+              console.log(JSON.stringify(data, null, 2));
+              // Uncomment the below line to copy the parsed json to clipboard
+              // navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+              setCopySuccess(true);
+              setError(false);
+              downloadFile(JSON.stringify(data, null, 2), true);
+            });
+        } else {
+          setError(true);
+        }
+      } else if (props.conversion === Constants.JSON_TO_EXCEL) {
+        if (acceptedFiles.length === 1) {
+          json2xls.onFileSelection(acceptedFiles[0], {}).then(data => {
+            console.log(data);
             setCopySuccess(true);
             setError(false);
-            downloadTxtFile(JSON.stringify(data, null, 2));
+            downloadFile(data, false);
           });
+        } else {
+          setError(true);
+        }
       } else {
         setError(true);
       }
@@ -91,9 +112,14 @@ function StyledDropzone() {
         {acceptedFiles.length === 0 &&
         <div {...getRootProps({style})}>
           <input {...getInputProps()} />
+          {props.conversion === Constants.EXCEL_TO_JSON && <p>Excel To Json</p>}
+          {props.conversion === Constants.JSON_TO_EXCEL && <p>Json To Excel</p>}
+          <br/>
           <p>Drag 'n' Drop file here<br/><br/>or<br/><br/>Click to Select file</p>
         </div>}
-        {copySuccess && <div style={style}>Parsed json saved to file !!</div>}
+        {copySuccess &&
+        <div style={style}>Parsed {props.conversion === Constants.EXCEL_TO_JSON ? "Excel" : "Json"} saved to file
+          !!</div>}
         {acceptedFiles.length > 1 && <div style={style}>Error !!<br/>Please add a single file at a time</div>}
         {errorParsing && <div style={style}>Can't parse the file...<br/>Try Another File..!!</div>}
       </div>

@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "excel-export": "^0.5.1",
     "react": "^16.13.1",
+    "react-cool-tabs": "^1.1.6",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.3",
     "react-scripts": "3.4.3",
